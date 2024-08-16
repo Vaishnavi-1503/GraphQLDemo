@@ -1,0 +1,17 @@
+query CountryList {
+   CountryList {
+   meta{
+    status
+    message
+    message_code
+    status_code
+  }
+    data{
+      uuid
+      name
+      country_code
+      phone_code
+      is_default
+    }
+  }
+}

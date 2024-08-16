@@ -1,0 +1,32 @@
+{
+  "schemaNamespace" : "GraphQL",
+  "options" : {
+    "cocoapodsCompatibleImportStatements" : true
+  },
+  "input" : {
+    "operationSearchPaths" : [
+      "**/GraphQL/*.graphql"
+    ],
+    "schemaSearchPaths" : [
+      "**/*.graphqls"
+    ]
+  },
+  "output" : {
+    "testMocks" : {
+      "none" : {
+      }
+    },
+    "schemaTypes" : {
+      "path" : "./GraphQlConfig/GraphQL",
+      "moduleType" : {
+        "embeddedInTarget" : {
+          "name" : "“GraphQL”"
+        }
+      }
+    },
+    "operations" : {
+      "inSchemaModule" : {
+      }
+    }
+  }
+}

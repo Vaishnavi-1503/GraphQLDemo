@@ -1,0 +1,1245 @@
+type Query {
+  Faq: FaqListResponse
+  CountryList: CountryListResponse
+  StateList: StateListResponse
+  JobRolesList: JobRolesListResponse
+  ShiftDetail(input: ShiftDetailInput!): ShiftDetailResponse
+  contactInfo: ContactInfo
+  MyShiftRequests(input: ShiftRequestsInput!): MyShiftRequestsResponse!
+  ShiftRequestDetail(input: RequestDetailInput!): ShiftRequestResponse!
+  ScheduleShifts(input: ScheduleShiftInput!): ScheduleShiftResponse!
+  UserAddress: UserAddressResponse
+  UserPaymentDetail: userPaymentDetailResponse
+  getShiftReminder: ShiftReminderInfo
+  getUserRating: UserRatingsInfo
+  getHomePageInfo: UserHomePageInfo
+  MyEarnings(input: MyEarningsInput!): MyEarningsResponse!
+  GetEarningDetail(input: EarningInput!): EarningResponse!
+  DocumentList: DocumentListResponse
+  MyShifts(input: ShiftsInput!): MyShiftsResponse!
+  HotelList: HotelListResponse
+  ContractorCvList: ContractorCvListResponse!
+  notifications(
+    orderBy: [QueryNotificationsOrderByOrderByClause!]
+
+    # Limits number of fetched items.
+    first: Int!
+
+    # The offset from which items are returned.
+    page: Int
+  ): NotificationPaginator
+}
+
+type FaqListResponse {
+  meta: Meta!
+  data: [faq]
+}
+
+type Meta {
+  status: Boolean!
+  message: String!
+  message_code: String!
+  status_code: Int!
+}
+
+type faq {
+  uuid: String
+  question: String!
+  answer: String!
+  sort_order: Int!
+  status: String
+}
+
+type CountryListResponse {
+  meta: Meta!
+  data: [countryData]
+}
+
+type countryData {
+  uuid: String
+  country_code: String
+  name: String
+  phone_code: String
+  is_default: Boolean
+}
+
+type StateListResponse {
+  meta: Meta!
+  data: [demo]
+}
+
+type demo {
+  uuid: String!
+  code: String!
+  name: String!
+  status: String!
+}
+
+type JobRolesListResponse {
+  meta: Meta!
+  data: [jobRoleData]
+}
+
+type jobRoleData {
+  uuid: String!
+  role_name: String!
+  certificates_uploaded: Boolean
+  is_selected: Boolean
+}
+
+input ShiftDetailInput {
+  uuid: String!
+}
+
+type ShiftDetailResponse {
+  meta: Meta!
+  data: ShiftDetailData!
+}
+
+type ShiftDetailData {
+  id: Int!
+  uuid: String!
+  job_name: String!
+  address: String!
+  certificates: String!
+  pay: Float!
+  start_datetime: DateTime!
+  end_datetime: DateTime!
+  lat: Float!
+  lon: Float!
+  roles_and_responsibility: String
+  is_applied: Boolean!
+  notes: String
+  contractor_notes: String
+}
+
+scalar DateTime
+
+type ContactInfo {
+  meta: Meta!
+  data: contactData
+}
+
+type contactData {
+  support_email: String
+  contact_number: String
+}
+
+input ShiftRequestsInput {
+  lat: Float!
+  lon: Float!
+  offset: Int!
+  limit: Int
+}
+
+type MyShiftRequestsResponse {
+  meta: Meta!
+  pagination: MyShiftPagination
+  data: [MyShiftRequests]!
+}
+
+type MyShiftPagination {
+  total_count: Int
+  offset: Int
+  limit: Int
+}
+
+type MyShiftRequests {
+  id: Int!
+  uuid: String!
+  job_name: String!
+  hotel_name: String!
+  address: String!
+  pay: Float!
+  distance: Float!
+  request_status: ShiftRequestStatus!
+  start_datetime: DateTime!
+  end_datetime: DateTime!
+  start_timestamp: Int
+  end_timestamp: Int
+}
+
+enum ShiftRequestStatus {
+  Pending
+  Applied
+  Rejected
+  Approved
+  ApprovedByContractor
+  AutoCanceled
+  AutoRejected
+  ClockedIn
+  ClockedOut
+  AutoCancelledByAdmin
+  AutoRejectedByAdmin
+  CancelledByManager
+  ContractorAbsent
+  CancelledByContractor
+}
+
+input RequestDetailInput {
+  uuid: String!
+}
+
+type ShiftRequestResponse {
+  meta: Meta!
+  data: ShiftRequestData!
+}
+
+type ShiftRequestData {
+  id: Int!
+  uuid: String!
+  job_name: String!
+  address: String!
+  certificates: String!
+  pay: Float!
+  start_datetime: DateTime!
+  end_datetime: DateTime!
+  lat: Float!
+  lon: Float!
+  request_status: ShiftRequestStatus!
+  reject_reason: String
+  is_applied: Boolean!
+  notes: String
+  start_timestamp: Int
+  end_timestamp: Int
+  manager_contact_number: String
+  manager_id: Int
+  manager_name: String
+  manager_profile_pic: String!
+  contractor_notes: String
+  is_conflicted: Int
+  total_shift_time: Float!
+  total_completed_shift_time: Float!
+  total_break_time: Float!
+}
+
+input ScheduleShiftInput {
+  year: Int!
+  month: Int!
+  lat: Float!
+  lon: Float!
+  offset: Int!
+  limit: Int
+}
+
+type ScheduleShiftResponse {
+  meta: Meta!
+  pagination: ScheduleShiftPagination
+  data: [ScheduleShift]!
+}
+
+type ScheduleShiftPagination {
+  total_count: Int
+  offset: Int
+  limit: Int
+}
+
+type ScheduleShift {
+  id: Int
+  uuid: String!
+  job_name: String!
+  hotel_name: String!
+  address: String!
+  pay: Float!
+  distance: Float!
+  request_status: ShiftRequestStatus!
+  start_datetime: DateTime!
+  end_datetime: DateTime!
+  start_timestamp: Int
+  end_timestamp: Int
+}
+
+type UserAddressResponse {
+  meta: Meta!
+  data: userAddress
+}
+
+type userAddress {
+  address_line_one: String
+  address_line_two: String
+  landmark: String
+  city: String
+  state_uuid: String
+  state: String
+  zipcode: String
+}
+
+type userPaymentDetailResponse {
+  meta: Meta!
+  data: userPaymentDetail
+}
+
+type userPaymentDetail {
+  bank_routing_no: String
+  bank_account_no: String
+}
+
+type ShiftReminderInfo {
+  meta: Meta!
+  data: ShiftReminderData
+}
+
+type ShiftReminderData {
+  reminder_timings: Int
+  email_notification: Boolean
+  sms_notification: Boolean
+}
+
+type UserRatingsInfo {
+  meta: Meta!
+  data: UserRatingsData
+}
+
+type UserRatingsData {
+  average_ratings: String
+  punctuality_total: String
+  presentable_total: String
+  knowledge_total: String
+  last_manager_comment: String
+}
+
+type UserHomePageInfo {
+  meta: Meta!
+  data: HomepageInfoData
+}
+
+type HomepageInfoData {
+  pending_shift_reqs: String
+  total_scheduled_shifts: String
+  next_shift_info: NextShiftInfo
+  current_shift_info: CurruntShiftInfo
+}
+
+type NextShiftInfo {
+  uuid: String
+  request_uuid: String
+  start_datetime: String
+  end_datetime: String
+  start_timestamp: String
+  end_timestamp: String
+  hotel_location: String
+  shift_created_datetime: String
+  shift_created_timestamp: String
+}
+
+type CurruntShiftInfo {
+  uuid: String
+  request_uuid: String
+  job_name: String
+  hotel_name: String
+  shist_requst_status: String
+  address: String
+  pay: String
+  start_datetime: String
+  end_datetime: String
+  start_timestamp: String
+  end_timestamp: String
+  in_break: Boolean
+}
+
+input MyEarningsInput {
+  offset: Int!
+  limit: Int
+}
+
+type MyEarningsResponse {
+  meta: Meta!
+  pagination: EarningPagination
+  data: [MyEarnList]!
+}
+
+type EarningPagination {
+  total_count: Int
+  offset: Int
+  limit: Int
+}
+
+type MyEarnList {
+  uuid: String!
+  start_date: Date!
+  end_date: Date!
+  start_timestamp: Int
+  end_timestamp: Int
+  earnings: Float!
+}
+
+scalar Date
+
+input EarningInput {
+  uuid: String!
+  offset: Int!
+  limit: Int
+}
+
+type EarningResponse {
+  meta: Meta!
+  pagination: EarningPagination
+  data: [EarnDetailList]!
+}
+
+type EarnDetailList {
+  uuid: String!
+  start_date: DateTime!
+  end_date: DateTime!
+  start_timestamp: Int
+  end_timestamp: Int
+  earnings: Float!
+  hotel: String!
+  address: String!
+  job_role: String!
+}
+
+type DocumentListResponse {
+  meta: Meta!
+  data: [DocumentData]
+}
+
+type DocumentData {
+  uuid: String!
+  url: String!
+  type: String!
+  file_type: String!
+  notify_me: Boolean!
+  expired_at: String!
+  approval_status: Int
+  reject_reason: String
+  thumb_url: String
+}
+
+input ShiftsInput {
+  lat: Float!
+  lon: Float!
+  offset: Int!
+  limit: Int
+  status: String!
+}
+
+type MyShiftsResponse {
+  meta: Meta!
+  pagination: MyShiftsPagination
+  data: [MyShiftData]!
+}
+
+type MyShiftsPagination {
+  total_count: Int
+  offset: Int
+  limit: Int
+}
+
+type MyShiftData {
+  id: Int!
+  uuid: String!
+  job_name: String!
+  job_role_id: Int!
+  hotel_name: String!
+  address: String!
+  pay: Float!
+  distance: Float!
+  request_status: ShiftRequestStatus!
+  start_datetime: DateTime!
+  end_datetime: DateTime!
+  start_timestamp: Int
+  end_timestamp: Int
+  is_conflicted: Int
+}
+
+type HotelListResponse {
+  meta: Meta!
+  data: [hotelData]
+}
+
+type hotelData {
+  uuid: String!
+  name: String!
+  image: String
+  location_name: String
+  address_line1: String
+  address_line2: String
+  lat: Float
+  long: Float
+  city: String
+  zipcode: String
+  is_selected: Boolean!
+}
+
+type ContractorCvListResponse {
+  meta: Meta!
+  data: mainDataCV
+}
+
+type mainDataCV {
+  cv_status: CVStatus
+  cv_reject_resion: String
+  dont_have_cv_flag: Boolean
+  file_data: [FileDataCV]
+}
+
+enum CVStatus {
+  Pending
+  Approved
+  Rejected
+}
+
+type FileDataCV {
+  uuid: String!
+  url: String!
+  file_type: String!
+  thumb_url: String
+}
+
+# Order by clause for Query.notifications.orderBy.
+input QueryNotificationsOrderByOrderByClause {
+  # The column that is used for ordering.
+  column: QueryNotificationsOrderByColumn!
+
+  # The direction that is used for ordering.
+  order: SortOrder!
+}
+
+# Allowed column names for Query.notifications.orderBy.
+enum QueryNotificationsOrderByColumn {
+  CREATED_AT
+}
+
+# Directions for ordering a list of records.
+enum SortOrder {
+  # Sort records in ascending order.
+  ASC
+
+  # Sort records in descending order.
+  DESC
+}
+
+# A paginated list of Notification items.
+type NotificationPaginator {
+  # Pagination information about the list of items.
+  paginatorInfo: PaginatorInfo!
+
+  # A list of Notification items.
+  data: [Notification!]!
+}
+
+# Information about pagination using a fully featured paginator.
+type PaginatorInfo {
+  # Number of items in the current page.
+  count: Int!
+
+  # Index of the current page.
+  currentPage: Int!
+
+  # Index of the first item in the current page.
+  firstItem: Int
+
+  # Are there more pages after this one?
+  hasMorePages: Boolean!
+
+  # Index of the last item in the current page.
+  lastItem: Int
+
+  # Index of the last available page.
+  lastPage: Int!
+
+  # Number of items per page.
+  perPage: Int!
+
+  # Number of total available items.
+  total: Int!
+}
+
+type Notification {
+  uuid: String!
+  user_id: String
+  data: String
+  read: Int
+  created_at: DateTime
+}
+
+type Mutation {
+  sendOtp: SendOtpResponse!
+  socialSignOn(input: socialSignOnInput!): socialSignOnResponse!
+  sendVerificationEmail: Response!
+  signup(input: SignUpInput!): SignUpResponse!
+  VerifyOTP(input: VeryfyOtpInput!): VeryfyOTpResponse!
+  login(input: LoginInput!): loginResponse!
+  logout: LogoutResponse!
+  forgotPassword(input: ForgotPasswordInput!): ForgotPasswordResponse!
+  UserData: UserDataResponse!
+  uploadBankInfo(input: UploadBankInfoInput!): UploadBankInfoResponse!
+  updateLocation(input: updateLocationInput!): updateLocationResponse!
+  availableShifts(input: availableShiftsInput!): AvailableShiftResponse!
+  updateFullName(input: UpdateFullNameInput!): UpdateFullNameResponse!
+  updateAddress(input: UpdateAdressInput!): UpdateAddressResponse!
+  updateMobileNumber(
+    input: UpdateMobileNumberInput!
+  ): UpdateMobileNumberResponse!
+  updateEmail(input: UpdateEmailInput!): UpdateEmailResponse!
+  JobRoleSubCategories(input: getJobRoleSubCatInput!): JobRoleSubCatResponse!
+  shiftRequest(input: ShiftRequestInput!): ShiftRequestResponse!
+  UploadUserProfileImange(image: Upload, is_delete: Int): UploadProfileImage!
+  startShift(input: StartShiftInput!): StartShiftResponse!
+  UploadEmpVerificationDoc(
+    document: Upload
+    type: Int
+    notify_me: Int
+    expired_at: String
+  ): UploadVerificationDoc!
+  deleteAccount(input: DeleteAccountInput): DeleteAccountResponse!
+  shiftReminder(input: ShiftReminderInput!): ShiftReminderResponse!
+  punchInOut(input: PunchInOutInput!): PunchInOutResponse!
+  earlyClockout(input: EarlyClockoutInput!): EarlyClockoutResponse!
+  endShift(input: EndShiftInput!): EndShiftResponse!
+  cancelShift(input: CancelShiftInput!): CancelShiftResponse!
+  NotificationList(input: NotificationListInput!): NotificationListInfo
+  updateFcmToken(input: UpdateFcmToken!): UpdateFcmTokenResponse!
+  CertificateList(
+    input: getJobRoleCertificateInput!
+  ): JobRoleCertificateResponse!
+  DeleteCertificate(input: CertificateDeleteInput!): DeleteCertificateResponse!
+  SendPushNotification(
+    input: SendPushNotificationInput!
+  ): SendPushNotificationResponse!
+  changePassword(input: updatePasswordInput!): UpdateMobileNumberResponse!
+  UpdateNotification(
+    input: UpdateNotificationInput!
+  ): UpdateNotificationResponse
+  sendmissedshiftmail(input: SendMissedShiftInput!): SendMailResponse!
+  saveJobRole(input: SaveJobRoleInput!): SaveJobRoleResponse!
+  updateHotel(input: UpdateHotel!): UpdateHotelResponse!
+  refreshToken(input: RefreshTokenInput): RefreshTokenPayload!
+}
+
+type SendOtpResponse {
+  meta: Meta!
+}
+
+input socialSignOnInput {
+  provider: String!
+  token: String!
+  first_name: String
+  last_name: String
+  code: String
+}
+
+type socialSignOnResponse {
+  meta: Meta!
+  data: socialSignOnData!
+}
+
+type socialSignOnData {
+  token_type: String!
+  expires_in: String!
+  access_token: String!
+  refresh_token: String!
+  user: socialUserData
+}
+
+type socialUserData {
+  uuid: String!
+  first_name: String
+  last_name: String
+  email: String!
+  status: String
+  completed: String
+  is_email_verified: String
+  avatar: String
+  chat_jwt_token: String
+  chat_id: String
+  id: Int
+}
+
+type Response {
+  meta: Meta!
+}
+
+input SignUpInput {
+  first_name: String!
+  last_name: String!
+  email: String!
+  phone_country_id: String!
+  mobile_number: String!
+  password: String!
+  confirm_password: String!
+}
+
+type SignUpResponse {
+  meta: Meta!
+  data: signupData
+}
+
+type signupData {
+  token_type: String!
+  expires_in: String!
+  access_token: String!
+  refresh_token: String!
+  user: userData
+}
+
+type userData {
+  id: Int
+  uuid: String!
+  first_name: String!
+  last_name: String!
+  email: String!
+  mobile_number: String!
+  status: String!
+  completed: String!
+  is_email_verified: String!
+  is_mobile_verified: String!
+  avatar: String
+  phone_country_id: String!
+  chat_jwt_token: String
+  chat_id: String
+}
+
+input VeryfyOtpInput {
+  otp: String!
+}
+
+type VeryfyOTpResponse {
+  meta: Meta!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+type loginResponse {
+  meta: Meta!
+  data: LoginData!
+}
+
+type LoginData {
+  token_type: String!
+  expires_in: String!
+  access_token: String!
+  refresh_token: String!
+  user: LoginUser
+}
+
+type LoginUser {
+  id: Int
+  uuid: String!
+  first_name: String
+  last_name: String
+  email: String!
+  mobile_number: String
+  status: String
+  completed: String
+  is_email_verified: String
+  is_mobile_verified: String
+  avatar: String
+  phone_country_id: String
+  chat_jwt_token: String
+  chat_id: String
+}
+
+type LogoutResponse {
+  meta: Meta!
+}
+
+input ForgotPasswordInput {
+  email: String!
+}
+
+type ForgotPasswordResponse {
+  meta: Meta!
+}
+
+type UserDataResponse {
+  meta: Meta!
+  data: userDetail
+}
+
+type userDetail {
+  id: Int
+  uuid: String!
+  first_name: String!
+  last_name: String!
+  email: String!
+  phone_country_id: String
+  phone_country_code: String
+  mobile_number: String
+  status: String!
+  completed: String
+  is_email_verified: String!
+  is_mobile_verified: String
+  thumbnail_avatar: String
+  avatar: String
+  complated: String!
+  total_completed_shifts: String
+  total_shift_request: String
+  average_ratings: String
+  address: String
+  is_social_signup: String
+  sign_in_through: String
+  certificate: String
+  cancel_shift_count: Int
+  early_clockout_count: Int
+  chat_jwt_token: String
+  chat_id: String
+  job_role: String
+  hotel_name: String
+}
+
+input UploadBankInfoInput {
+  bank_rounting_no: String!
+  confirm_bank_rounting_no: String!
+  bank_account_no: String!
+  confirm_bank_account_no: String!
+}
+
+type UploadBankInfoResponse {
+  meta: Meta!
+}
+
+input updateLocationInput {
+  latitude: String!
+  longitude: String!
+}
+
+type updateLocationResponse {
+  meta: Meta!
+}
+
+input availableShiftsInput {
+  lat: Float!
+  lon: Float!
+  offset: Int!
+  limit: Int
+  shift_startdate_from: String
+  shift_startdate_to: String
+  pay_from: Int
+  pay_to: Int
+  distance_from: Int
+  distance_to: Int
+  sort_by: String
+  job_role_uuid: String
+}
+
+type AvailableShiftResponse {
+  meta: Meta!
+  pagination: ShiftPagination
+  data: [AvailableShifts]!
+}
+
+type ShiftPagination {
+  total_count: Int
+  offset: Int
+  limit: Int
+}
+
+type AvailableShifts {
+  uuid: String!
+  id: Int!
+  job_role_id: String
+  job_name: String!
+  job_uuid: String
+  hotel_name: String!
+  address: String!
+  is_public: String
+  is_applied: Boolean!
+  pay: Int!
+  start_datetime: DateTime!
+  end_datetime: DateTime!
+  total_vacancy: Int!
+  distance: Float!
+  status: ShiftStatus!
+}
+
+enum ShiftStatus {
+  Draft
+  Unassigned
+  Assigned
+  Live
+  Completed
+  Canceled
+  AutoCanceled
+}
+
+input UpdateFullNameInput {
+  first_name: String!
+  last_name: String!
+}
+
+type UpdateFullNameResponse {
+  meta: Meta!
+}
+
+input UpdateAdressInput {
+  address_line_one: String!
+  address_line_two: String!
+  landmark: String!
+  city: String!
+  state_uuid: String!
+  zipcode: String!
+}
+
+type UpdateAddressResponse {
+  meta: Meta!
+}
+
+input UpdateMobileNumberInput {
+  phone_country_id: String!
+  mobile_number: String!
+}
+
+type UpdateMobileNumberResponse {
+  meta: Meta!
+}
+
+input UpdateEmailInput {
+  email: String!
+}
+
+type UpdateEmailResponse {
+  meta: Meta!
+}
+
+input getJobRoleSubCatInput {
+  uuid: String!
+}
+
+type JobRoleSubCatResponse {
+  meta: Meta!
+  data: [SubCategory]
+}
+
+type SubCategory {
+  uuid: String!
+  parant_uuid: String!
+  title: String!
+  status: CertificateStatus!
+  reject_reason: String!
+}
+
+enum CertificateStatus {
+  Pending
+  Approved
+  Rejected
+  Expired
+  None
+}
+
+input ShiftRequestInput {
+  uuid: String!
+  notes: String
+}
+
+scalar Upload
+
+type UploadProfileImage {
+  status: Boolean!
+  message: String!
+  message_code: String!
+  status_code: Int!
+}
+
+input StartShiftInput {
+  uuid: String!
+  lat: Float!
+  lon: Float!
+  clock_in_qr: String
+}
+
+type StartShiftResponse {
+  meta: Meta!
+}
+
+type UploadVerificationDoc {
+  status: Boolean!
+  message: String!
+  message_code: String!
+  status_code: Int!
+}
+
+input DeleteAccountInput {
+  token: String
+}
+
+type DeleteAccountResponse {
+  meta: Meta!
+}
+
+input ShiftReminderInput {
+  reminder_timings: Int!
+  email_notification: Boolean
+  sms_notification: Boolean
+}
+
+type ShiftReminderResponse {
+  meta: Meta!
+}
+
+input PunchInOutInput {
+  uuid: String!
+  action: String!
+  lat: Float!
+  lon: Float!
+}
+
+type PunchInOutResponse {
+  meta: Meta!
+}
+
+input EarlyClockoutInput {
+  uuid: String!
+  lat: Float!
+  lon: Float!
+  reason: String!
+  clock_out_qr: String
+}
+
+type EarlyClockoutResponse {
+  meta: Meta!
+}
+
+input EndShiftInput {
+  uuid: String!
+  lat: Float!
+  lon: Float!
+  clock_out_qr: String
+}
+
+type EndShiftResponse {
+  meta: Meta!
+}
+
+input CancelShiftInput {
+  uuid: String!
+}
+
+type CancelShiftResponse {
+  meta: Meta!
+}
+
+input NotificationListInput {
+  offset: Int!
+  limit: Int
+}
+
+type NotificationListInfo {
+  meta: Meta!
+  pagination: NotificationPagination
+  data: [Notifications]
+}
+
+type NotificationPagination {
+  total_count: Int
+  offset: Int
+  limit: Int
+}
+
+type Notifications {
+  uuid: String
+  title: String
+  description: String
+  date: String
+  is_read: String
+  type: String
+}
+
+input UpdateFcmToken {
+  device_token: String!
+  device_type: Int!
+}
+
+type UpdateFcmTokenResponse {
+  meta: Meta!
+}
+
+input getJobRoleCertificateInput {
+  uuid: String!
+}
+
+type JobRoleCertificateResponse {
+  meta: Meta!
+  data: mainData
+}
+
+type mainData {
+  notify_me: Boolean
+  expired_at: String
+  file_data: [FileData]
+}
+
+type FileData {
+  uuid: String!
+  url: String!
+  file_type: String!
+  thumb_url: String
+}
+
+input CertificateDeleteInput {
+  uuid: String!
+}
+
+type DeleteCertificateResponse {
+  meta: Meta!
+}
+
+input SendPushNotificationInput {
+  template_key: String!
+  uuid: String!
+}
+
+type SendPushNotificationResponse {
+  meta: Meta!
+}
+
+input updatePasswordInput {
+  currunt_password: String!
+  new_password: String!
+  confirm_password: String!
+}
+
+input UpdateNotificationInput {
+  uuid: String!
+  read: Int!
+}
+
+type UpdateNotificationResponse {
+  meta: Meta
+}
+
+input SendMissedShiftInput {
+  uuid: String!
+  subject: String!
+  description: String!
+}
+
+type SendMailResponse {
+  meta: Meta!
+}
+
+input SaveJobRoleInput {
+  job_roles: String!
+}
+
+type SaveJobRoleResponse {
+  meta: Meta!
+}
+
+input UpdateHotel {
+  hotel_id: String!
+}
+
+type UpdateHotelResponse {
+  meta: Meta!
+}
+
+input RefreshTokenInput {
+  refresh_token: String
+}
+
+type RefreshTokenPayload {
+  access_token: String!
+  refresh_token: String!
+  expires_in: Int!
+  token_type: String!
+}
+
+type User {
+  id: ID
+}
+
+type my {
+  id: ID
+}
+
+type UpdatePasswordResponse {
+  meta: Meta!
+}
+
+# Aggregate functions when ordering by a relation without specifying a column.
+enum OrderByRelationAggregateFunction {
+  # Amount of items.
+  COUNT
+}
+
+# Aggregate functions when ordering by a relation that may specify a column.
+enum OrderByRelationWithColumnAggregateFunction {
+  # Average.
+  AVG
+
+  # Minimum.
+  MIN
+
+  # Maximum.
+  MAX
+
+  # Sum.
+  SUM
+
+  # Amount of items.
+  COUNT
+}
+
+# Allows ordering a list of records.
+input OrderByClause {
+  # The column that is used for ordering.
+  column: String!
+
+  # The direction that is used for ordering.
+  order: SortOrder!
+}
+
+# Information about pagination using a simple paginator.
+type SimplePaginatorInfo {
+  # Number of items in the current page.
+  count: Int!
+
+  # Index of the current page.
+  currentPage: Int!
+
+  # Index of the first item in the current page.
+  firstItem: Int
+
+  # Index of the last item in the current page.
+  lastItem: Int
+
+  # Number of items per page.
+  perPage: Int!
+
+  # Are there more pages after this one?
+  hasMorePages: Boolean!
+}
+
+# Information about pagination using a Relay style cursor connection.
+type PageInfo {
+  # When paginating forwards, are there more items?
+  hasNextPage: Boolean!
+
+  # When paginating backwards, are there more items?
+  hasPreviousPage: Boolean!
+
+  # The cursor to continue paginating backwards.
+  startCursor: String
+
+  # The cursor to continue paginating forwards.
+  endCursor: String
+
+  # Total number of nodes in the paginated connection.
+  total: Int!
+
+  # Number of nodes in the current page.
+  count: Int!
+
+  # Index of the current page.
+  currentPage: Int!
+
+  # Index of the last available page.
+  lastPage: Int!
+}
+
+# Specify if you want to include or exclude trashed results from a query.
+enum Trashed {
+  # Only return trashed results.
+  ONLY
+
+  # Return both trashed and non-trashed results.
+  WITH
+
+  # Only return non-trashed results.
+  WITHOUT
+}
